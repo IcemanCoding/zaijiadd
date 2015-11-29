@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.zaijiadd.app.user.dao.UserInfoDAO;
 import com.zaijiadd.app.user.dto.UserReceiveInfoDTO;
+import com.zaijiadd.app.user.dto.UserStoreDTO;
+import com.zaijiadd.app.user.entity.UserInfoEntity;
 import com.zaijiadd.app.user.service.UserInfoService;
 
 public class UserInfoServiceImpl implements UserInfoService {
@@ -57,6 +59,21 @@ public class UserInfoServiceImpl implements UserInfoService {
 		
 		return false;
 	
+	}
+
+	@Override
+	public UserInfoEntity checkLogin(Map<String, String> param) {
+		return userInfoDao.loginCheck(param);
+	}
+
+	@Override
+	public UserInfoEntity queryUserInfoByUserId(Integer userId) {
+		return userInfoDao.queryByUserId(userId);
+	}
+
+	@Override
+	public UserStoreDTO getUserStoreByUserId(Integer userId) {
+		return userInfoDao.getUserStoreByUserId(userId);
 	}
 
 }

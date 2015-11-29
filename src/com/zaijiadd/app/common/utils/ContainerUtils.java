@@ -96,6 +96,12 @@ public class ContainerUtils {
 		
 	}
 	
+	public static Map<String, Object> buildResultMap(Map<String, Object> data) {
+		data.put( "flag", ConstantsForResponse.RESPONSE_CODE_SUCESS );
+		data.put( "msg", ConstantsForResponse.RESPONSE_MESSAGE_SUCESS );
+		return data;
+	}
+	
 	public static Map<String, Object> buildResMap( Map data, Integer flag, String msg, String responseCode ) {
 		
 		Map<String, Object> res = new HashMap<String, Object>();

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zaijiadd.app.order.dao.OrderDetailDAO">
+
+	<select id="lookOrderDetailById" parameterType="int" resultType="orderDetailDTO">
+		select 
+			o.id,
+			o.order_id as orderCode,
+			o.user_id as userId,
+			o.trans_code as transCode,
+			o.product_id as productId,
+			o.amount,
+			o.trans_status as transStatus,
+			o.create_date as createDate,
+			o.update_date as updateDate,
+			o.discount_amount as discountAmount,
+			o.trans_expenses as transExpenses,
+			o.logistics_type_id as logisticsTypeId,
+			o.logistics_code as logisticsCode,
+			o.pay_status as payStatus,
+			o.presending_time as presendingTime,
+			o.supply_store_id as supplyStoreId,
+			l.`name` as logisticsName,
+			l.short_name as logisticsShortName
+		 from 
+		 	order_info o left join logistics_type l
+		 	on  o.logistics_type_id = l.id
+		where o.id = #{id}
+	</select>
+	
+	<select id="lookOrderDetailByOrderCode" parameterType="string" resultType="orderDetailDTO">
+		select 
+			o.id,
+			o.order_id as orderCode,
+			o.user_id as userId,
+			o.trans_code as transCode,
+			o.product_id as productId,
+			o.amount,
+			o.trans_status as transStatus,
+			o.create_date as createDate,
+			o.update_date as updateDate,
+			o.discount_amount as discountAmount,
+			o.trans_expenses as transExpenses,
+			o.logistics_type_id as logisticsTypeId,
+			o.logistics_code as logisticsCode,
+			o.pay_status as payStatus,
+			o.presending_time as presendingTime,
+			o.supply_store_id as supplyStoreId,
+			l.`name` as logisticsName,
+			l.short_name as logisticsShortName
+		 from 
+		 	order_info o left join logistics_type l
+			on  o.logistics_type_id = l.id
+     	 where  o.order_id =  #{orderCode}
+	</select>
+
+	<select id="queryAllOrderByUserId" parameterType="map" resultType="orderDetailDTO">
+		select 
+			o.id,
+			o.order_id as orderCode,
+			o.user_id as userId,
+			o.trans_code as transCode,
+			o.product_id as productId,
+			o.amount,
+			o.trans_status as transStatus,
+			o.create_date as createDate,
+			o.update_date as updateDate,
+			o.discount_amount as discountAmount,
+			o.trans_expenses as transExpenses,
+			o.logistics_type_id as logisticsTypeId,
+			o.logistics_code as logisticsCode,
+			o.pay_status as payStatus,
+			o.presending_time as presendingTime,
+			o.supply_store_id as supplyStoreId,
+			l.`name` as logisticsName,
+			l.short_name as logisticsShortName
+		 from 
+		 	order_info o left join logistics_type l
+			on  o.logistics_type_id = l.id
+     	 where  o.user_id = #{userId}
+     	 order by o.update_date desc,o.create_date desc 
+     	 limit #{start},#{pageSize}
+	</select>
+
+	<!-- 查找某商店下的所有订单信息 -->
+	<select id="queryAllOrderInStore" parameterType="map" resultType="orderDetailDTO">
+		select 
+			o.id,
+			o.order_id as orderCode,
+			o.user_id as userId,
+			o.trans_code as transCode,
+			o.product_id as productId,
+			o.amount,
+			o.trans_status as transStatus,
+			o.create_date as createDate,
+			o.update_date as updateDate,
+			o.discount_amount as discountAmount,
+			o.trans_expenses as transExpenses,
+			o.logistics_type_id as logisticsTypeId,
+			o.logistics_code as logisticsCode,
+			o.pay_status as payStatus,
+			o.presending_time as presendingTime,
+			o.supply_store_id as supplyStoreId,
+			l.`name` as logisticsName,
+			l.short_name as logisticsShortName
+		 from 
+		 	order_info o left join logistics_type l
+			on  o.logistics_type_id = l.id
+     	 where  o.supply_store_id = #{supplyStoreId}
+     	 order by o.update_date desc,o.create_date desc 
+     	 limit #{start},#{pageSize}
+	</select>
+	
+	<!-- 查看某订单下的所有产品信息 -->
+	<select id="lookGoodsInfoByOrderKeyId" parameterType="int" resultType="goodsInfoInOrderDTO">
+		select 
+			o.id,
+			g.goods_id as goodsID,
+			g.category_id as categoryId,
+			g.goods_name as goodsName,
+			g.description,
+			g.spec,
+			g.pic,
+			g.tag,
+			s.goods_info_id as goodsInfoId,
+			s.price,
+			s.stock,
+			s.sale_count as saleCount,
+			t.store_name as storeName,
+			t.store_addr as storeAddr
+			 from
+			order_goods_info o,
+			supply_goods_info s,
+			goods_info g,
+			store_info t
+		where 
+			o.supply_goods_info_id=s.id
+			and s.goods_info_id=g.id 
+			and s.user_store_id = t.store_id
+			and o.order_key_id=#{orderKeyId}
+	</select>
+
+</mapper>

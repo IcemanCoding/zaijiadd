@@ -14,7 +14,9 @@
 	<context:component-scan base-package="com.zaijiadd.app" use-default-filters="false">
         <context:include-filter type="regex" expression="com.zaijiadd.app.*.controller.*"/> 
     </context:component-scan>
+    
     <mvc:default-servlet-handler default-servlet-name="default" />
+    
 	<mvc:annotation-driven />
 
     <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
@@ -35,5 +37,14 @@
         <property name="ignoreAcceptHeader" value="true" />
     </bean>
     
+	<!--拦截器配置，记录日志-->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<mvc:exclude-mapping path="/" />
+			<mvc:exclude-mapping path="/login" />
+			<bean class="com.zaijiadd.app.user.interceptors.LoginInterceptor"/>
+		</mvc:interceptor>
+	</mvc:interceptors>
 </beans>
 

@@ -26,6 +26,13 @@
     	<typeAlias type="com.zaijiadd.app.product.dto.ProductGoodsDTO" alias="productGoodsDto"/>
     	<typeAlias type="com.zaijiadd.app.user.entity.UserProductEntity" alias="userProductEntity"/>
     	<typeAlias type="com.zaijiadd.app.order.entity.JDOrderInfoEntity" alias="jdOrderEntity"/>
+    	<typeAlias type="com.zaijiadd.app.user.entity.UserInfoEntity" alias="userInfoEntity"/>
+    	<typeAlias type="com.zaijiadd.app.user.dto.UserStoreDTO" alias="userStoreDTO"/>
+    	<typeAlias type="com.zaijiadd.app.store.entity.SupplyGoodsInfoEntity" alias="supplyGoodsInfoEntity"/>
+    	<typeAlias type="com.zaijiadd.app.store.entity.GoodsInfoEntity" alias="goodsInfoEntity"/>
+    	<typeAlias type="com.zaijiadd.app.store.entity.CategoryInfoEntity" alias="categoryInfoEntity"/>
+    	<typeAlias type="com.zaijiadd.app.order.dto.OrderDetailDTO" alias="orderDetailDTO"/>
+    	<typeAlias type="com.zaijiadd.app.order.dto.GoodsInfoInOrderDTO" alias="goodsInfoInOrderDTO"/>
     </typeAliases>
 
     <mappers>
@@ -38,6 +45,9 @@
     	<mapper resource="com/zaijiadd/app/system/dao/systemParamsMapper.xml"/>
     	<mapper resource="com/zaijiadd/app/system/dao/tradeLogMapper.xml"/>
     	<mapper resource="com/zaijiadd/app/user/dao/userProductMapper.xml"/>
+    	<mapper resource="com/zaijiadd/app/store/dao/supplyGoodsInfoMapper.xml"/>
+    	<mapper resource="com/zaijiadd/app/store/dao/categoryInfoMapper.xml"/>
+    	<mapper resource="com/zaijiadd/app/order/dao/orderDetailMapper.xml"/>
     </mappers>
 
 </configuration> 

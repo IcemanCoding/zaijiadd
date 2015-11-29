@@ -29,6 +29,10 @@
 	</listener-class>
   </listener>
  
+	 <listener>  
+		<listener-class>com.zaijiadd.app.common.listener.SessionListener</listener-class>  
+	</listener> 
+ 
   <filter>
     <filter-name>characterEncodingFilter</filter-name>
     <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>

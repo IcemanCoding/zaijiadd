@@ -2,6 +2,12 @@ package com.zaijiadd.app.utils.constants;
 
 public class ConstantsForOrder {
 	
+	//已支付
+	public static final Integer PAY_STATUS_SUCCESS = 1;
+	
+	//未支付状态
+	public static final Integer NO_PAY_STATUS = 0;
+	
 	// 订单初始状态
 	public static final Integer TRANS_STATUS_INITIAL = 1;
 	// 订单处理成功状态
