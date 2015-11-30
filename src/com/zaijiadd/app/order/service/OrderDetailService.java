@@ -43,4 +43,11 @@ public interface OrderDetailService {
 	 * @return
 	 */
 	public List<OrderDetailDTO> queryAllOrderInStore(int storeId, int pageNo);
+	
+	/**
+	 * 根据订单状态查看订单
+	 * @param params
+	 * @return
+	 */
+	public List<OrderDetailDTO> queryAllOrderByPayStatus(Integer payStatus, int pageNo);
 }

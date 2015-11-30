@@ -102,6 +102,12 @@ public class ContainerUtils {
 		return data;
 	}
 	
+	public static Map<String, Object> buildResultErrMap(Map<String, Object> data) {
+		data.put( "flag", ConstantsForResponse.RESPONSE_CODE_ERR );
+		data.put( "msg", ConstantsForResponse.RESPONSE_MESSAGE_ERR );
+		return data;
+	}
+	
 	public static Map<String, Object> buildResMap( Map data, Integer flag, String msg, String responseCode ) {
 		
 		Map<String, Object> res = new HashMap<String, Object>();

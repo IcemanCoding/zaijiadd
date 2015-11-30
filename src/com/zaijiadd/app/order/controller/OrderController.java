@@ -180,6 +180,52 @@ public class OrderController extends BaseController {
 		
 		return ContainerUtils.buildResultMap( resData );
 	}
+	
+	/**
+	 * 根据订单状态查看订单
+	 * 供应商特有
+	 * @param supplyStoreId
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping ( value = "/lookAllOrderByStatus", method = RequestMethod.POST )
+	@ResponseBody
+	public Map<String, Object> lookAllOrderByStatus(HttpServletRequest request) {
+		Map<String, Object> resData = new HashMap<String, Object>();
+		
+		int userType = (int) request.getAttribute(ConstantsForLogin.USER_TYPE);//得到用户类型
+		
+		if(userType != ConstantsForUserType.SUPPLY_STORE_OWNER){
+			return ContainerUtils.buildResMap(resData, -1, "您没有权限!");
+		}
+		
+		
+		String payStatusStr = request.getParameter("payStatus");//订单状态
+		Integer payStatus = null;
+		if(payStatusStr == null){
+			
+		}
+		
+		String pNo = request.getParameter(ConstantsForPage.PAGE_NO);//第几页
+		int pageNo = 1;
+		
+		if(pNo != null) pageNo = Integer.parseInt(pNo);
+		
+		Integer payStatusInt = null;
+		if(payStatus > 0 && payStatus <= 5){
+			payStatusInt = payStatus;
+		}else if(payStatus < 0 || payStatus > 5){
+			return ContainerUtils.buildResultErrMap(resData);
+		}
+		
+		List<OrderDetailDTO> orderDetails = orderDetailService.queryAllOrderByPayStatus(payStatusInt, pageNo);
+				
+		resData.put("data", orderDetails);
+		
+		return ContainerUtils.buildResultMap( resData );
+	}
+	
+	
 	/**
 	 * 查看某订单下所有商品详情
 	 * @param request

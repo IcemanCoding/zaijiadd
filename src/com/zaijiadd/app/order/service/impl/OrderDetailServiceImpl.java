@@ -55,5 +55,19 @@ public class OrderDetailServiceImpl implements OrderDetailService {
 		params.put("supplyStoreId", storeId);
 		return orderDetailDao.queryAllOrderInStore(params);
 	}
+
+	/**
+	 * 根据订单状态查看订单
+	 * @param params
+	 * @return
+	 */
+	@Override
+	public List<OrderDetailDTO> queryAllOrderByPayStatus(Integer payStatus, int pageNo) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put(ConstantsForPage.PAGE_SIZE, ConstantsForPage.PER_PAGE_SIZE);
+		params.put(ConstantsForPage.START, ConstantsForPage.PER_PAGE_SIZE * (pageNo-1));
+		params.put("payStatus", payStatus);
+		return orderDetailDao.queryAllOrderByPayStatus(params);
+	}
 	
 }

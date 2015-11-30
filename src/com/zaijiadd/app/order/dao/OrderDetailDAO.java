@@ -43,4 +43,11 @@ public interface OrderDetailDAO {
 	 * @return
 	 */
 	public List<OrderDetailDTO> queryAllOrderInStore(Map<String, Object> params);
+	
+	/**
+	 * 根据订单状态查看订单
+	 * @param params
+	 * @return
+	 */
+	public List<OrderDetailDTO> queryAllOrderByPayStatus(Map<String, Object> params);
 }

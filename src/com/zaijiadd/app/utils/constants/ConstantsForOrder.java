@@ -2,11 +2,19 @@ package com.zaijiadd.app.utils.constants;
 
 public class ConstantsForOrder {
 	
+	//order_info中的pay_status状态对应下边5种情况	
 	//已支付
-	public static final Integer PAY_STATUS_SUCCESS = 1;
+	public static final Integer PAY_STATUS_SUCCESS = 2;
 	
 	//未支付状态
-	public static final Integer NO_PAY_STATUS = 0;
+	public static final Integer NO_PAY_STATUS = 1;
+	
+	public static final Integer DELIVER_GOODS = 3;//发货eliver goods
+	
+	public static final Integer NO_DELIVER_GOODS = 4;//没发货eliver goods
+	
+	public static final Integer ORDER_DOWN = 5;//发货eliver goods
+	
 	
 	// 订单初始状态
 	public static final Integer TRANS_STATUS_INITIAL = 1;
