@@ -1,6 +1,7 @@
 package com.zaijiadd.app.user.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,9 +19,9 @@ import com.zaijiadd.app.common.utils.ContainerUtils;
 import com.zaijiadd.app.common.utils.ParseUtils;
 import com.zaijiadd.app.common.utils.UserConvertUtils;
 import com.zaijiadd.app.common.viewmodel.RequestViewmodel;
-import com.zaijiadd.app.common.viewmodel.SupplyRequestViewModel;
 import com.zaijiadd.app.user.dto.UserReceiveInfoDTO;
 import com.zaijiadd.app.user.entity.UserInfoEntity;
+import com.zaijiadd.app.user.entity.UserSendScopeEntity;
 import com.zaijiadd.app.user.service.UserInfoService;
 import com.zaijiadd.app.user.service.UserReceiveInfoService;
 import com.zaijiadd.app.user.service.UserStoreService;
@@ -95,6 +96,36 @@ public class UserInfoController extends BaseController {
 		
 		return ContainerUtils.buildResSuccessMap( resData );
 
+	}
+	
+	@RequestMapping ( value = "/updateSendScope", method = RequestMethod.POST )
+	@ResponseBody
+	public Map<String, Object> updateSendScope(HttpServletRequest request){
+		Map<String, Object> resData = new HashMap<String, Object>();
+		
+		//得到用户信息
+		UserInfoEntity userInfo = getCurrentLoginUserInfoInSession(getUserSessionId(request));
+
+		String pIdStr = request.getParameter("provinceId");
+		String cityIdStr = request.getParameter("cityId");
+		String townIdStr = request.getParameter("townId");
+		String sendScope = request.getParameter("sendScope");
+
+		List<UserSendScopeEntity> usseList = userInfoService.getUserSendScope(userInfo.getUserId());
+		UserSendScopeEntity userSendScope = new UserSendScopeEntity();
+		userSendScope.setCityId(cityIdStr);
+		userSendScope.setProvinceId(pIdStr);
+		userSendScope.setTownId(townIdStr);
+		userSendScope.setUserId(userInfo.getUserId());
+		userSendScope.setSendScope(sendScope);
+		if(usseList.size() > 0){//修改
+			userSendScope.setId(usseList.get(0).getId());
+			userInfoService.updateUserSendScope(userSendScope);
+		}else{
+			userInfoService.addUserSendScope(userSendScope);
+		}
+		
+		return ContainerUtils.buildResSuccessMap(resData);
 	}
 	
 }

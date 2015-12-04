@@ -33,6 +33,8 @@
     	<typeAlias type="com.zaijiadd.app.store.entity.CategoryInfoEntity" alias="categoryInfoEntity"/>
     	<typeAlias type="com.zaijiadd.app.order.dto.OrderDetailDTO" alias="orderDetailDTO"/>
     	<typeAlias type="com.zaijiadd.app.order.dto.GoodsInfoInOrderDTO" alias="goodsInfoInOrderDTO"/>
+    	<typeAlias type="com.zaijiadd.app.order.entity.LogisticsTypeEntity" alias="logisticsTypeEntity"/>
+    	<typeAlias type="com.zaijiadd.app.user.entity.UserSendScopeEntity" alias="userSendScopeEntity"/>
     </typeAliases>
 
     <mappers>

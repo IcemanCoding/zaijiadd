@@ -1,9 +1,11 @@
 package com.zaijiadd.app.user.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import com.zaijiadd.app.user.dto.UserStoreDTO;
 import com.zaijiadd.app.user.entity.UserInfoEntity;
+import com.zaijiadd.app.user.entity.UserSendScopeEntity;
 
 public interface UserInfoDAO {
 	
@@ -23,4 +25,12 @@ public interface UserInfoDAO {
 	 * @return
 	 */
 	public UserStoreDTO getUserStoreByUserId(Integer userId);
+	
+	public int updatePassword(Map<String, Object> param);
+	
+	public List<UserSendScopeEntity> getUserSendScope(Integer userId);
+	
+	public int addUserSendScope(UserSendScopeEntity userSendScope);
+	
+	public int updateUserSendScope(UserSendScopeEntity userSendScope);
 }

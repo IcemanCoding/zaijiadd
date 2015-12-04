@@ -1,12 +1,5 @@
 package com.zaijiadd.app.external.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.zaijiadd.app.common.utils.DateUtils;
@@ -19,6 +12,12 @@ import com.zaijiadd.app.system.dao.TradeLogDAO;
 import com.zaijiadd.app.user.dto.UserReceiveInfoDTO;
 import com.zaijiadd.app.utils.constants.ConstantsForAccount;
 import com.zaijiadd.app.utils.constants.ConstantsForSystemParams;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class JdRequestServiceImpl implements JdRequestService {
 	

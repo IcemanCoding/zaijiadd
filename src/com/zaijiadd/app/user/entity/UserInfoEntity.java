@@ -1,6 +1,7 @@
 package com.zaijiadd.app.user.entity;
 
 import java.util.Date;
+import java.util.List;
 
 public class UserInfoEntity {
 	private Integer userId;//user_id;
@@ -15,6 +16,8 @@ public class UserInfoEntity {
 	private String email;
 	private String pic;
 	private Date lastLoginTime;//last_login_time
+	
+	private List<UserSendScopeEntity> userSendScopeList;
 	
 	public Integer getUserId() {
 		return userId;
@@ -87,6 +90,12 @@ public class UserInfoEntity {
 	}
 	public void setLastLoginTime(Date lastLoginTime) {
 		this.lastLoginTime = lastLoginTime;
+	}
+	public List<UserSendScopeEntity> getUserSendScopeList() {
+		return userSendScopeList;
+	}
+	public void setUserSendScopeList(List<UserSendScopeEntity> userSendScopeList) {
+		this.userSendScopeList = userSendScopeList;
 	}
 
 }

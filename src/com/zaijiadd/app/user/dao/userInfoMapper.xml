@@ -72,6 +72,10 @@
 		(u.mobile_number=#{loginName} and u.`password`=#{loginPass})
 	</select>
 	
+	<update id="updatePassword" parameterType="map">
+		update user_info set `password`=#{password} where user_id=#{userId}
+	</update>
+	
 	<select id="queryByUserId" parameterType="int" resultMap="userInfoResultMap">
 		select
 			user_id,zaijiadd_id,mobile_number,user_type,
@@ -82,4 +86,27 @@
 		where 
 			u.user_id = #{userId}
 	</select>
+
+	<select id="getUserSendScope" parameterType="int" resultType="userSendScopeEntity">
+		select id,province_id provinceId,city_id cityId, town_id townId, send_scope sendScope
+		  from user_send_scope where user_id=#{userId}
+	</select>
+	
+	<insert id="addUserSendScope" parameterType="userSendScopeEntity">
+		insert into user_send_scope (user_id,province_id,city_id, town_id, send_scope)
+		values(#{userId},#{provinceId},#{cityId},#{townId},#{sendScope});
+	</insert>
+	
+	<update id="updateUserSendScope" parameterType="userSendScopeEntity">
+		update 
+			user_send_scope 
+		set 
+			province_id=#{provinceId},
+			city_id=#{cityId},
+			town_id=#{townId}, 
+			send_scope=#{sendScope} 
+		where 
+			id=#{id};
+	</update>
+	
 </mapper>

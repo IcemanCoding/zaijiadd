@@ -69,4 +69,25 @@ public interface SupplyGoodsInfoDao {
 	 * @return
 	 */
 	public SupplyGoodsInfoEntity getGoodsInfoById(Integer id);
+	
+	/**
+	 * 添加新的商品
+	 * @param params
+	 * @return
+	 */
+	public int addGoodsInfo(GoodsInfoEntity goodsInfo);
+	
+	/**
+	 * 批量修改商品类型
+	 * @param params
+	 * @return
+	 */
+	public int batchUpdateGoodInfoType(Map<String, Object> params);
+	
+	/**
+	 * 修改图片路径
+	 * @param params
+	 * @return
+	 */
+	public int updateGoodsImgUrl(Map<String, Object> params);
 }

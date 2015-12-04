@@ -24,7 +24,7 @@ public interface SupplyGoodsInfoService {
 	 * @param params
 	 * @return
 	 */
-	public List<SupplyGoodsInfoEntity> queryGoodsInfoInStore(int storeId, String categoryCode, int pageNo);
+	public List<SupplyGoodsInfoEntity> queryGoodsInfoInStore(int storeId,int categoryId, String categoryCode, int pageNo);
 	
 	/**
 	 * 根据supply_goods_info中的id查询某产品的详细情况
@@ -65,5 +65,24 @@ public interface SupplyGoodsInfoService {
 	 */
 	public void saleOutGoods(int id, int saleCount);
 	
+	/**
+	 * 添加新的商品
+	 * @param params
+	 * @return
+	 */
+	public int addGoodsInfo(GoodsInfoEntity goodsInfo);
 	
+	/**
+	 * 批量修改商品类型
+	 * @param params
+	 * @return
+	 */
+	public int batchUpdateGoodInfoType(int categoryId, String ids);
+	
+	/**
+	 * 修改图片路径
+	 * @param params
+	 * @return
+	 */
+	public int updateGoodsImgUrl(int id, String picUrl);
 }

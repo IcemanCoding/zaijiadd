@@ -1,6 +1,7 @@
 package com.zaijiadd.app.order.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class OrderDetailDTO implements Serializable {
 
@@ -22,9 +23,22 @@ public class OrderDetailDTO implements Serializable {
 	private String presendingTime;//预计送到时间
 	private Integer payStatus;//订单支付状态 0: 未支付 1:已支付
 	private Integer supplyStoreId;//此订单属于哪个供应商  商店Id
+	private String payTime;//支付时间
 	
 	private String logisticsName;//物流公司公称
 	private String logisticsShortName;//物流公司俗称
+	
+	private String mobileNumber;
+	private String account;
+	private String storeName;
+	private String storeAddr;
+	
+	private String receiveAddress;
+	private String receiveMobile;
+	private String receiveRealName;
+	private String receivePostCode;
+	
+	private List<GoodsInfoInOrderDTO> goodsInfoInOrderList;
 	
 	public Integer getId() {
 		return id;
@@ -133,6 +147,66 @@ public class OrderDetailDTO implements Serializable {
 	}
 	public void setLogisticsShortName(String logisticsShortName) {
 		this.logisticsShortName = logisticsShortName;
+	}
+	public String getMobileNumber() {
+		return mobileNumber;
+	}
+	public void setMobileNumber(String mobileNumber) {
+		this.mobileNumber = mobileNumber;
+	}
+	public String getAccount() {
+		return account;
+	}
+	public void setAccount(String account) {
+		this.account = account;
+	}
+	public String getStoreName() {
+		return storeName;
+	}
+	public void setStoreName(String storeName) {
+		this.storeName = storeName;
+	}
+	public String getStoreAddr() {
+		return storeAddr;
+	}
+	public void setStoreAddr(String storeAddr) {
+		this.storeAddr = storeAddr;
+	}
+	public List<GoodsInfoInOrderDTO> getGoodsInfoInOrderList() {
+		return goodsInfoInOrderList;
+	}
+	public void setGoodsInfoInOrderList(List<GoodsInfoInOrderDTO> goodsInfoInOrderList) {
+		this.goodsInfoInOrderList = goodsInfoInOrderList;
+	}
+	public String getReceiveAddress() {
+		return receiveAddress;
+	}
+	public void setReceiveAddress(String receiveAddress) {
+		this.receiveAddress = receiveAddress;
+	}
+	public String getReceiveMobile() {
+		return receiveMobile;
+	}
+	public void setReceiveMobile(String receiveMobile) {
+		this.receiveMobile = receiveMobile;
+	}
+	public String getReceiveRealName() {
+		return receiveRealName;
+	}
+	public void setReceiveRealName(String receiveRealName) {
+		this.receiveRealName = receiveRealName;
+	}
+	public String getReceivePostCode() {
+		return receivePostCode;
+	}
+	public void setReceivePostCode(String receivePostCode) {
+		this.receivePostCode = receivePostCode;
+	}
+	public String getPayTime() {
+		return payTime;
+	}
+	public void setPayTime(String payTime) {
+		this.payTime = payTime;
 	}
 	
 }

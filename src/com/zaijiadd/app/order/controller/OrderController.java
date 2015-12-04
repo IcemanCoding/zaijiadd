@@ -102,6 +102,12 @@ public class OrderController extends BaseController {
 		Map<String, Object> resData = new HashMap<String, Object>();
 		
 		OrderDetailDTO orderDetail = orderDetailService.lookOrderDetailById(orderId);
+		int orderKeyId = orderDetail.getId();
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("orderKeyId", orderKeyId);
+		
+		List<GoodsInfoInOrderDTO> goodsInfoList = orderDetailService.joinGoodsInfoByOrderKeyId(params);
+		orderDetail.setGoodsInfoInOrderList(goodsInfoList);
 		
 		resData.put("data", orderDetail);
 		
@@ -132,7 +138,7 @@ public class OrderController extends BaseController {
 	public Map<String, Object> lookAllOrder(HttpServletRequest request, SupplyRequestViewModel viewmodel) {
 		Map<String, Object> resData = new HashMap<String, Object>();
 		
-		UserInfoEntity userInfo = getCurrentLoginUserInfoInSession(request, viewmodel);
+		UserInfoEntity userInfo = getCurrentLoginUserInfoInSession(getUserSessionId(request));//getCurrentLoginUserInfoInSession(request, viewmodel);
 		int userId = userInfo.getUserId();
 		
 		String pNo = request.getParameter(ConstantsForPage.PAGE_NO);//第几页
@@ -190,21 +196,23 @@ public class OrderController extends BaseController {
 	 */
 	@RequestMapping ( value = "/lookAllOrderByStatus", method = RequestMethod.POST )
 	@ResponseBody
-	public Map<String, Object> lookAllOrderByStatus(HttpServletRequest request) {
+	public Map<String, Object> lookAllOrderByStatus(HttpServletRequest request, SupplyRequestViewModel viewmodel) {
 		Map<String, Object> resData = new HashMap<String, Object>();
+		//得到用户信息
+		UserInfoEntity userInfo = getCurrentLoginUserInfoInSession(getUserSessionId(request));
+		//getCurrentLoginUserInfoInSession(getUserSessionId(request));
 		
-		int userType = (int) request.getAttribute(ConstantsForLogin.USER_TYPE);//得到用户类型
+		if(userInfo == null){
+			return ContainerUtils.buildHeadMap(resData, -1, "请先登录");
+		}
+		int userType = userInfo.getUserType();//得到用户类型
 		
 		if(userType != ConstantsForUserType.SUPPLY_STORE_OWNER){
 			return ContainerUtils.buildResMap(resData, -1, "您没有权限!");
 		}
 		
-		
-		String payStatusStr = request.getParameter("payStatus");//订单状态
-		Integer payStatus = null;
-		if(payStatusStr == null){
-			
-		}
+		//订单状态
+		Integer payStatus = Integer.parseInt(request.getParameter("payStatus"));
 		
 		String pNo = request.getParameter(ConstantsForPage.PAGE_NO);//第几页
 		int pageNo = 1;
@@ -212,14 +220,27 @@ public class OrderController extends BaseController {
 		if(pNo != null) pageNo = Integer.parseInt(pNo);
 		
 		Integer payStatusInt = null;
-		if(payStatus > 0 && payStatus <= 5){
+		if(payStatus == 0){
+			payStatusInt = null;
+		}else if(payStatus > 0 && payStatus <= 5){
 			payStatusInt = payStatus;
 		}else if(payStatus < 0 || payStatus > 5){
 			return ContainerUtils.buildResultErrMap(resData);
 		}
 		
 		List<OrderDetailDTO> orderDetails = orderDetailService.queryAllOrderByPayStatus(payStatusInt, pageNo);
-				
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put(ConstantsForPage.START, 0);
+		params.put(ConstantsForPage.PAGE_SIZE, 3);
+		int size = orderDetails.size();
+		for(int i=0;i<size;i++){
+			OrderDetailDTO orderD = orderDetails.get(i);
+			int orderKeyId = orderD.getId();
+			params.put("orderKeyId", orderKeyId);
+			List<GoodsInfoInOrderDTO> goodsInfoList = orderDetailService.joinGoodsInfoByOrderKeyId(params);
+			orderDetails.get(i).setGoodsInfoInOrderList(goodsInfoList);
+		}
+		
 		resData.put("data", orderDetails);
 		
 		return ContainerUtils.buildResultMap( resData );
@@ -243,4 +264,45 @@ public class OrderController extends BaseController {
 		
 		return ContainerUtils.buildResultMap( resData );
 	}
+	
+	/**
+	 * 查看某订单下所有商品详情
+	 * @param request
+	 * @param viewmodel
+	 * @return
+	 */
+	@RequestMapping ( value = "/updatePayStatusToDeliver", method = RequestMethod.POST )
+	@ResponseBody
+	public Map<String, Object> updatePayStatusToDeliver(HttpServletRequest request,@RequestParam("orderKeyId")int orderKeyId, @RequestParam("isHasl")int isHasLogistics) {
+		Map<String, Object> resData = new HashMap<String, Object>();
+		
+		if(ConstantsForOrder.HAS_LOGISTICS == isHasLogistics){//有物流
+			int logisticsTypeId = Integer.parseInt(request.getParameter("lId"));
+			String logisticsCode = request.getParameter("lCode");
+			orderInfoService.updatePayStatusByOrderKeyId(orderKeyId, ConstantsForOrder.DELIVER_GOODS, logisticsTypeId, logisticsCode);//由没发货修改成已发货
+		}else if(ConstantsForOrder.NO_LOGISTICS == isHasLogistics){//无物流
+			orderInfoService.updatePayStatusByOrderKeyId(orderKeyId, ConstantsForOrder.DELIVER_GOODS);//由没发货修改成已发货
+		}else{
+			return ContainerUtils.buildResultErrMap(resData);
+		}
+		
+		return ContainerUtils.buildResultMap(resData);
+	}
+	
+	/**
+	 * 查看某订单下所有商品详情
+	 * @param request
+	 * @param viewmodel
+	 * @return
+	 */
+	@RequestMapping ( value = "/updatePayStatusToDone", method = RequestMethod.POST )
+	@ResponseBody
+	public Map<String, Object> updatePayStatusToDone(@RequestParam("orderKeyId")int orderKeyId) {
+		Map<String, Object> resData = new HashMap<String, Object>();
+		
+		orderInfoService.updatePayStatusByOrderKeyId(orderKeyId, ConstantsForOrder.ORDER_DONE);//由没发货修改成已发货
+		
+		return ContainerUtils.buildResultMap(resData);
+	}
+	
 }

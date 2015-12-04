@@ -39,7 +39,7 @@ public class CategoryInfoController extends BaseController{
 		
 		resData.put("data", categoryInfoList);
 		
-		return ContainerUtils.buildResSuccessMap( resData );
+		return ContainerUtils.buildResultMap( resData );
 	}
 	
 }

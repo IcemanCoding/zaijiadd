@@ -40,9 +40,9 @@ public class BaseController {
 		
 	}
 	
-	@SuppressWarnings("rawtypes")
+/*	@SuppressWarnings("rawtypes")
 	@ModelAttribute
-	public SupplyRequestViewModel buildSupplyRequest( HttpServletRequest request ) {
+	public SupplyRequestViewModel buildSupplyRequest(HttpServletRequest request) {
 		
 		SupplyRequestViewModel viewmodel = new SupplyRequestViewModel();
 		
@@ -51,16 +51,31 @@ public class BaseController {
 		while ( headerNames.hasMoreElements() ) {
 			String key = ( String ) headerNames.nextElement();
 			String value = request.getHeader( key );
-			if ( key.equalsIgnoreCase( "userSessionId" ) ) {
+			if (key.equalsIgnoreCase("userSessionId")) {
 				viewmodel.setUserSessionId(value);
 			}
 		}
 		
 		return viewmodel;
 		
+	}*/
+	
+	public String getUserSessionId(HttpServletRequest request){
+		//Enumeration headerNames = request.getHeaderNames();
+		String userSessionId = request.getHeader("userSessionId");/*null;*/
+		/*while ( headerNames.hasMoreElements() ) {
+			String key = ( String ) headerNames.nextElement();
+			String value = request.getHeader( key );
+			if (key.equalsIgnoreCase("userSessionId")) {
+				userSessionId = value;
+				break;
+			}
+		}*/
+		
+		return userSessionId;
 	}
 	
-	@ModelAttribute
+	/*@ModelAttribute
 	public UserInfoEntity getCurrentLoginUserInfoInSession(HttpServletRequest request, SupplyRequestViewModel viewmodel){
 		SessionContext myc= SessionContext.getInstance();  
 		HttpSession sess = myc.getSession(viewmodel.getUserSessionId());
@@ -69,6 +84,16 @@ public class BaseController {
 		}
 		UserInfoEntity userInfo = (UserInfoEntity) sess.getAttribute(ConstantsForLogin.SESSION_NAME_LOGIN_RESULT);
 		request.setAttribute(ConstantsForLogin.USER_TYPE, userInfo.getUserType());
+		return userInfo;
+	}*/
+	
+	public UserInfoEntity getCurrentLoginUserInfoInSession(String sessionId){
+		SessionContext myc= SessionContext.getInstance();  
+		HttpSession sess = myc.getSession(sessionId);
+		if(null == sess){
+			return null;
+		}
+		UserInfoEntity userInfo = (UserInfoEntity) sess.getAttribute(ConstantsForLogin.SESSION_NAME_LOGIN_RESULT);
 		return userInfo;
 	}
 }

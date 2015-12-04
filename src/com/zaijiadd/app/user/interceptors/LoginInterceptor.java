@@ -2,7 +2,6 @@ package com.zaijiadd.app.user.interceptors;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,21 +15,11 @@ import com.zaijiadd.app.utils.constants.ConstantsForLogin;
 
 public class LoginInterceptor extends HandlerInterceptorAdapter {
 	
-	 @SuppressWarnings("finally")
 	@Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         SessionContext myc= SessionContext.getInstance();  
         
-        @SuppressWarnings("rawtypes")
-		Enumeration headerNames = request.getHeaderNames();
-        String userSessionId = "";
-		while ( headerNames.hasMoreElements() ) {
-			String key = ( String ) headerNames.nextElement();
-			String value = request.getHeader( key );
-			if ( key.equalsIgnoreCase(ConstantsForLogin.SUPPLY_SESSION_ID) ) {
-				userSessionId = value;
-			}
-		}
+        String userSessionId = request.getHeader(ConstantsForLogin.SUPPLY_SESSION_ID);
         
 		HttpSession sess = myc.getSession(userSessionId);
 		
@@ -43,13 +32,13 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
                 out = response.getWriter();
                 out.append("{\"msg\": \"请先登录\",\"flag\": -1}"); 
                 out.flush();
+                return false;
             } catch (IOException e) {  
                 e.printStackTrace();  
             } finally {  
                 if (out != null) {  
                     out.close();  
                 }  
-                return false;
             }
             
         }  

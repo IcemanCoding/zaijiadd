@@ -28,6 +28,12 @@ public class GoodsInfoInOrderDTO implements Serializable {
 	
 	private String storeName;//商店名称
 	private String storeAddr;//商店地址
+	
+	
+	private Integer count;//此订单中 该物品的总量
+	private String categoryCode;//商品类型简称
+	private String categoryName;//商品类型名称
+	
 	public Integer getId() {
 		return id;
 	}
@@ -111,6 +117,24 @@ public class GoodsInfoInOrderDTO implements Serializable {
 	}
 	public void setStoreAddr(String storeAddr) {
 		this.storeAddr = storeAddr;
+	}
+	public Integer getCount() {
+		return count;
+	}
+	public void setCount(Integer count) {
+		this.count = count;
+	}
+	public String getCategoryCode() {
+		return categoryCode;
+	}
+	public void setCategoryCode(String categoryCode) {
+		this.categoryCode = categoryCode;
+	}
+	public String getCategoryName() {
+		return categoryName;
+	}
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
 	}
 	
 }

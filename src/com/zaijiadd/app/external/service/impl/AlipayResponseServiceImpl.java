@@ -1,19 +1,17 @@
 package com.zaijiadd.app.external.service.impl;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Map;
-
-import com.alibaba.fastjson.JSONObject;
 import com.zaijiadd.app.common.utils.Md5Utils;
 import com.zaijiadd.app.external.service.AlipayResponseService;
 import com.zaijiadd.app.external.utils.AlipayConfig;
 import com.zaijiadd.app.external.utils.AlipayCore;
 import com.zaijiadd.app.external.utils.RSA;
 import com.zaijiadd.app.utils.constants.ConstantsForAccount;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Map;
 
 public class AlipayResponseServiceImpl implements AlipayResponseService {
 

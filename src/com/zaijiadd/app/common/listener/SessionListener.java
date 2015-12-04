@@ -14,7 +14,7 @@ import com.zaijiadd.app.common.utils.SessionContext;
  *
  */
 public class SessionListener {
-	public static Map<String, HttpSession> userMap = new HashMap<String, HttpSession>();  
+	//public static Map<String, HttpSession> userMap = new HashMap<String, HttpSession>();  
 	private   SessionContext myc = SessionContext.getInstance();  
 	  
 	public void sessionCreated(HttpSessionEvent httpSessionEvent) {  

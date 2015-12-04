@@ -33,6 +33,7 @@ public class SessionContext {
 	public synchronized void delSession(HttpSession session) {  
 		if (session != null) {  
 			sessionMap.remove(session.getId());  
+			//session.invalidate();//销毁session
 		}  
 	}  
 	  

@@ -11,4 +11,6 @@ public class ConstantsForResponse {
 	public final static Integer RESPONSE_CODE_ERR = -1;
 	public final static String RESPONSE_MESSAGE_ERR = "参数错误";
 	
+	public final static String RESPONSE_MESSAGE_NO_KNOW_ERR = "未知错误";
+	
 }

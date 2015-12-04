@@ -117,4 +117,23 @@ public class OrderInfoServiceImpl implements OrderInfoService {
 		
 	}
 
+	@Override
+	public void updatePayStatusByOrderKeyId(int orderKeyId, int updataPayStatusTo) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("orderKeyId", orderKeyId);
+		params.put("payStatus", updataPayStatusTo);
+		orderInfoDao.updatePayStatusByOrderKeyId(params);
+	}
+
+	@Override
+	public void updatePayStatusByOrderKeyId(int orderKeyId, int updataPayStatusTo, int lTypeId, String lCode) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("orderKeyId", orderKeyId);
+		params.put("payStatus", updataPayStatusTo);
+		params.put("logisticsTypeId", lTypeId);
+		params.put("logisticsCode", lCode);
+		
+		orderInfoDao.updatePayStatusByOrderKeyId(params);		
+	}
+
 }

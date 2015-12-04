@@ -64,8 +64,12 @@
 		 where 
 			s.goods_info_id = g.id 
 			and g.category_id = c.category_id
+			and s.status = 1
 			<if test="categoryCode != null and categoryCode != ''">
 				and c.category_code = #{categoryCode}
+			</if>
+			<if test="categoryId != null and categoryId != ''">
+				and c.category_id = #{categoryId}
 			</if>
 		order by 
 			s.sale_count desc,s.price
@@ -100,8 +104,12 @@
 			s.goods_info_id = g.id 
 			and g.category_id = c.category_id
 			and s.user_store_id = #{storeId}
+			and s.status = 1
 			<if test="categoryCode != null and categoryCode != ''">
 				and c.category_code = #{categoryCode}
+			</if>
+			<if test="categoryId != null and categoryId != ''">
+				and c.category_id = #{categoryId}
 			</if>
 		order by 
 			s.sale_count desc,s.price
@@ -166,7 +174,7 @@
 			price = #{price},
 		</if>
 		<if test="stock != null">
-			stock = stock + #{stock},
+			stock = #{stock},
 		</if>
 		<if test="saleCount != null">
 			sale_count = sale_count + #{saleCount},
@@ -186,6 +194,13 @@
 		</foreach>
 	</update>
 	
+	<update id="batchUpdateGoodInfoType" parameterType="map">
+		update goods_info set category_id=#{categoryId},update_date=now() where id in 
+		<foreach collection="ids" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</update>
+	
 	<!-- 售出物件记录 -->
 	<update id="saleOutGoods" parameterType="map">
 		update 
@@ -194,6 +209,16 @@
 			stock = stock - #{saleCount},
 			sale_count = sale_count + #{saleCount}
 		where id=#{id}
+	</update>
+	
+	<update id="updateGoodsImgUrl" parameterType="map">
+		<if test="pic != null and pic != ''">
+			update 
+				goods_info 
+			set 
+				pic = #{pic}
+			where id=#{id}
+		</if>
 	</update>
 	
 	<insert id="addSupplyGoods" parameterType="supplyGoodsInfoEntity">
@@ -205,5 +230,11 @@
 	<select id="isHasGoodsInSupplyGoodsInfo" parameterType="supplyGoodsInfoEntity" resultType="supplyGoodsInfoEntity">
 		select id from supply_goods_info where goods_info_id=#{goodsInfoId} and user_store_id=#{userStoreId}
 	</select>
+	
+	<insert id="addGoodsInfo" parameterType="goodsInfoEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		goods_info(category_id, goods_name, spec, pic, `status`, update_date, create_date)
+		values(#{categoryId}, #{goodsName},#{spec},#{pic}, #{status}, now(), now())
+	</insert>
 
 </mapper>

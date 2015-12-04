@@ -1,23 +1,23 @@
 package com.zaijiadd.app.order.service.impl;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.ibatis.annotations.Param;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.zaijiadd.app.order.dao.OrderDetailDAO;
 import com.zaijiadd.app.order.dto.GoodsInfoInOrderDTO;
 import com.zaijiadd.app.order.dto.OrderDetailDTO;
+import com.zaijiadd.app.order.entity.LogisticsTypeEntity;
 import com.zaijiadd.app.order.service.OrderDetailService;
 import com.zaijiadd.app.utils.constants.ConstantsForPage;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class OrderDetailServiceImpl implements OrderDetailService {
 
 	@Autowired
 	private OrderDetailDAO orderDetailDao;
-	
+
 	@Override
 	public OrderDetailDTO lookOrderDetailById(Integer id) {
 		return orderDetailDao.lookOrderDetailById(id);
@@ -68,6 +68,16 @@ public class OrderDetailServiceImpl implements OrderDetailService {
 		params.put(ConstantsForPage.START, ConstantsForPage.PER_PAGE_SIZE * (pageNo-1));
 		params.put("payStatus", payStatus);
 		return orderDetailDao.queryAllOrderByPayStatus(params);
+	}
+
+	@Override
+	public List<GoodsInfoInOrderDTO> joinGoodsInfoByOrderKeyId(Map<String, Object> params) {
+		return orderDetailDao.joinGoodsInfoByOrderKeyId(params);
+	}
+
+	@Override
+	public List<LogisticsTypeEntity> queryLogisticsTypes() {
+		return orderDetailDao.queryLogisticsTypes();
 	}
 	
 }
