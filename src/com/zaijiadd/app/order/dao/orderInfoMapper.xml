@@ -74,4 +74,21 @@
 		jd_trade_order_id = #{jdTradeOrderId}
 	</update>
 
+	<update id="updatePayStatusByOrderKeyId" parameterType="java.util.Map">
+		update order_info 
+		<set>
+			<if test="payStatus != null and payStatus != ''">
+				pay_status=#{payStatus},
+			</if>
+			<if test="logisticsCode != null and logisticsCode != ''">
+				logistics_code=#{logisticsCode},
+			</if>
+			<if test="logisticsTypeId != null and logisticsTypeId != ''">
+				logistics_type_id=#{logisticsTypeId},
+			</if>
+		</set>
+		,update_date = now() 
+		where id=${orderKeyId}
+	</update>
+
 </mapper>

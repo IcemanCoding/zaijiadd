@@ -17,4 +17,9 @@ public interface OrderInfoDAO {
 	
 	public Integer updateJDOrderInfo( Map<String, Object> params );
 	
+	/**
+	 * 修改订单状态
+	 * @param params
+	 */
+	public void updatePayStatusByOrderKeyId(Map<String, Object> params);
 }

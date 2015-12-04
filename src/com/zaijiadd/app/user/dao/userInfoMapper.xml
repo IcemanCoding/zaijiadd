@@ -2,7 +2,40 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.zaijiadd.app.user.dao.UserInfoDAO">
+	
+	<resultMap type="userInfoEntity" id="userInfoResultMap">
+		<result property="userId" column="user_id"/>
+		<result property="zaijiaaddId" column="zaijiadd_id"/>
+		<result property="mobileNumber" column="mobile_number"/>
+		<result property="userType" column="user_type"/>
+		<result property="createDate" column="create_date"/>
+		<result property="updateDate" column="update_date"/>
+		<result property="password" column="password"/>
+		<result property="account" column="account"/>
+		<result property="loginiStatus" column="logini_status"/>
+		<result property="email" column="email"/>
+		<result property="pic" column="pic"/>
+		<result property="lastLoginTime" column="last_login_time"/>
+	</resultMap>
 
+	<resultMap type="userStoreDTO" id="userStoreResultMap">
+		<result property="id" column="id"/>
+		<result property="userId" column="user_id"/>
+		<result property="storeId" column="store_id"/>
+		<result property="storeName" column="store_name"/>
+		<result property="storeAddr" column="store_addr"/>
+	</resultMap>
+	
+	<select id="getUserStoreByUserId" parameterType="int" resultMap="userStoreResultMap">
+		select 
+			u.id, u.user_id, u.store_id ,s.store_addr, s.store_name
+		from 
+			user_store u, store_info s
+		where 
+			u.store_id=s.store_id 
+			and user_id=#{userId}
+	</select>
+	
 	<select id="isUserInfoExist" parameterType="java.lang.String"
 		resultType="java.lang.Integer">
 		SELECT
@@ -25,6 +58,55 @@
 		FROM
 		user_info
 		WHERE
-		zaijiadd_id = #{zaijiaddid}
+		zaijiadd_id =
+		#{zaijiaddid}
 	</select>
+
+	<select id="loginCheck" parameterType="map" resultMap="userInfoResultMap">
+		select
+		user_id,zaijiadd_id,mobile_number,user_type,create_date,update_date,account,login_status,email,pic,last_login_time
+		from user_info u
+		where
+		(u.account=#{loginName} and u.`password`=#{loginPass} )
+		or
+		(u.mobile_number=#{loginName} and u.`password`=#{loginPass})
+	</select>
+	
+	<update id="updatePassword" parameterType="map">
+		update user_info set `password`=#{password} where user_id=#{userId}
+	</update>
+	
+	<select id="queryByUserId" parameterType="int" resultMap="userInfoResultMap">
+		select
+			user_id,zaijiadd_id,mobile_number,user_type,
+			create_date,update_date,account,
+			login_status,email,pic,last_login_time
+		from 
+			user_info u
+		where 
+			u.user_id = #{userId}
+	</select>
+
+	<select id="getUserSendScope" parameterType="int" resultType="userSendScopeEntity">
+		select id,province_id provinceId,city_id cityId, town_id townId, send_scope sendScope
+		  from user_send_scope where user_id=#{userId}
+	</select>
+	
+	<insert id="addUserSendScope" parameterType="userSendScopeEntity">
+		insert into user_send_scope (user_id,province_id,city_id, town_id, send_scope)
+		values(#{userId},#{provinceId},#{cityId},#{townId},#{sendScope});
+	</insert>
+	
+	<update id="updateUserSendScope" parameterType="userSendScopeEntity">
+		update 
+			user_send_scope 
+		set 
+			province_id=#{provinceId},
+			city_id=#{cityId},
+			town_id=#{townId}, 
+			send_scope=#{sendScope} 
+		where 
+			id=#{id};
+	</update>
+	
 </mapper>

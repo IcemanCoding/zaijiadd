@@ -19,17 +19,15 @@
 		<resources>
 			<resource>
 				<directory>src</directory>
-				<excludes>
-					<exclude>**/*.java</exclude>
-				</excludes>
+				<includes>
+					<include>**/*.xml</include>
+				</includes>
 			</resource>
 			<resource>
 				<directory>res</directory>
-				<excludes>
-					
-					<exclude>**/*.properties</exclude>	
-							
-				</excludes>	
+				<includes>
+					<include>**/*.*</include>
+				</includes>
 			</resource>
 		    <!-- 
 			<resource>
@@ -576,6 +574,7 @@
 		    <artifactId>httpcore</artifactId>
 		    <version>4.4</version>
 		</dependency>
+		
 	</dependencies>
 	<artifactId>ddhomeapp</artifactId>
 </project>

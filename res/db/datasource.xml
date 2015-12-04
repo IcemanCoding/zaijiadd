@@ -7,9 +7,9 @@
             http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
             http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
             http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
-    <context:property-placeholder location="classpath*:db/ds.properties"/>  
-    <!-- 定义数据源Bean,使用C3P0数据源实现-->
-    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+    <context:property-placeholder location="classpath*:db/ds.properties"/>
+    <!-- 定义数据源Bean,使用C3P0数据源实现--><!--  destroy-method="close" -->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
         <!-- 指定连接数据库的驱动-->
         <property name="driverClass" value="${driverClass}"/>
         <!-- 指定连接数据库的URL-->

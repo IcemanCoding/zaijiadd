@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zaijiadd.app.store.dao.SupplyGoodsInfoDao">
+	
+	<resultMap type="categoryInfoEntity" id="categoryInfoResultMap">
+		<result property="categoryId" column="category_id"/>
+		<result property="parentId" column="parent_id"/>
+		<result property="categoryCode" column="category_code"/>
+		<result property="categoryName" column="category_name"/>
+	</resultMap>
+
+	<resultMap type="goodsInfoEntity" id="goodsInfoResultMap">
+		<result property="id" column="goodsInfoIdM"/>
+		<result property="goodsID" column="goods_iD"/>
+		<result property="categoryId" column="category_id"/>
+		<result property="goodsName" column="goods_name"/>
+		<result property="description" column="description"/>
+		<result property="spec" column="spec"/>
+		<result property="pic" column="pic"/>
+		<result property="tag" column="tag"/>
+		<result property="status" column="goodsStatus"/>
+		<result property="createDate" column="create_date"/>
+		<result property="update_date" column="update_date"/>
+		<result property="appGoodsId" column="app_goods_id"/>
+		<association property="categoryInfo" resultMap="categoryInfoResultMap" />
+	</resultMap>
+
+	<resultMap type="supplyGoodsInfoEntity" id="supplyGoodsInfoResultMap">
+		<result property="id" column="id"/>
+		<result property="goodsInfoId" column="goods_info_id"/>
+		<result property="price" column="price"/>
+		<result property="stock" column="stock"/>
+		<result property="status" column="status"/>
+		<result property="userStoreId" column="user_store_id"/>
+		<result property="saleCount" column="sale_count"/>
+		<association property="goodsInfo" resultMap="goodsInfoResultMap" />
+	</resultMap>
+
+	<!-- 查找供应商下的产品 -->
+	<select id="queryGoodsInfo" parameterType="map" resultMap="supplyGoodsInfoResultMap">
+		select 
+			s.id,
+			s.goods_info_id,
+			s.price,
+			s.stock,
+			s.`status`,
+			s.user_store_id,
+			s.sale_count,
+			g.id as goodsInfoIdM,
+			g.goods_id,
+			g.category_id,
+			g.goods_name,
+			g.description,
+			g.spec,
+			g.`status` as goodsStatus,
+			g.pic,
+			g.tag,
+			c.category_code,
+			c.category_name,
+			c.parent_id
+		 from 
+		 	supply_goods_info s, goods_info g ,category_info c
+		 where 
+			s.goods_info_id = g.id 
+			and g.category_id = c.category_id
+			and s.status = 1
+			<if test="categoryCode != null and categoryCode != ''">
+				and c.category_code = #{categoryCode}
+			</if>
+			<if test="categoryId != null and categoryId != ''">
+				and c.category_id = #{categoryId}
+			</if>
+		order by 
+			s.sale_count desc,s.price
+		limit #{start},#{pageSize}
+	</select>
+
+	<!-- 查找某供应商下的产品 -->
+	<select id="queryGoodsInfoInStore" parameterType="map" resultMap="supplyGoodsInfoResultMap">
+		select 
+			s.id,
+			s.goods_info_id,
+			s.price,
+			s.stock,
+			s.`status`,
+			s.user_store_id,
+			s.sale_count,
+			g.id as goodsInfoIdM,
+			g.goods_id,
+			g.category_id,
+			g.goods_name,
+			g.description,
+			g.spec,
+			g.`status` as goodsStatus,
+			g.pic,
+			g.tag,
+			c.category_code,
+			c.category_name,
+			c.parent_id
+		 from 
+		 	supply_goods_info s, goods_info g ,category_info c
+		 where 
+			s.goods_info_id = g.id 
+			and g.category_id = c.category_id
+			and s.user_store_id = #{storeId}
+			and s.status = 1
+			<if test="categoryCode != null and categoryCode != ''">
+				and c.category_code = #{categoryCode}
+			</if>
+			<if test="categoryId != null and categoryId != ''">
+				and c.category_id = #{categoryId}
+			</if>
+		order by 
+			s.sale_count desc,s.price
+		limit #{start},#{pageSize}
+	</select>
+	
+	<!-- 查找某产品的详细信息-->
+	<select id="getGoodsInfoById" parameterType="map" resultMap="supplyGoodsInfoResultMap">
+		select 
+			s.id,
+			s.goods_info_id,
+			s.price,
+			s.stock,
+			s.`status`,
+			s.user_store_id,
+			s.sale_count,
+			g.id as goodsInfoIdM,
+			g.goods_id,
+			g.category_id,
+			g.goods_name,
+			g.description,
+			g.spec,
+			g.`status` as goodsStatus,
+			g.pic,
+			g.tag,
+			c.category_code,
+			c.category_name,
+			c.parent_id
+		 from 
+		 	supply_goods_info s, goods_info g ,category_info c
+		 where 
+			s.goods_info_id = g.id 
+			and g.category_id = c.category_id
+			and s.id=#{id}
+	</select>
+
+	<select id="queryGoodsInfoByGoodsName" parameterType="map" resultMap="goodsInfoResultMap">
+		select 
+			g.id as goodsInfoIdM,
+			g.goods_id,
+			g.category_id,
+			g.goods_name,
+			g.description,
+			g.spec,
+			g.pic,
+			g.tag,
+			c.category_code,
+			c.category_name,
+			c.parent_id
+		from 
+			goods_info g, category_info c
+		where 
+			g.category_id = c.category_id
+			and g.goods_name like '%${goodsName}%'
+		order by g.goods_name
+		limit #{start},#{pageSize}
+	</select>
+	
+	<update id="updateSupplyGoods" parameterType="supplyGoodsInfoEntity">
+		update supply_goods_info set 
+		<if test="price != null">
+			price = #{price},
+		</if>
+		<if test="stock != null">
+			stock = #{stock},
+		</if>
+		<if test="saleCount != null">
+			sale_count = sale_count + #{saleCount},
+		</if>
+		<if test = "status != null">
+			`status` = #{status},
+		</if>
+		updated_time=now()
+		where id = #{id}
+	</update>
+	
+	<!-- List集合传递参数 -->
+	<update id="batchUndercarriage" parameterType="collection">
+		update supply_goods_info set `status`=-1,updated_time=now() where id in 
+		<foreach collection="ids" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</update>
+	
+	<update id="batchUpdateGoodInfoType" parameterType="map">
+		update goods_info set category_id=#{categoryId},update_date=now() where id in 
+		<foreach collection="ids" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</update>
+	
+	<!-- 售出物件记录 -->
+	<update id="saleOutGoods" parameterType="map">
+		update 
+			supply_goods_info 
+		set 
+			stock = stock - #{saleCount},
+			sale_count = sale_count + #{saleCount}
+		where id=#{id}
+	</update>
+	
+	<update id="updateGoodsImgUrl" parameterType="map">
+		<if test="pic != null and pic != ''">
+			update 
+				goods_info 
+			set 
+				pic = #{pic}
+			where id=#{id}
+		</if>
+	</update>
+	
+	<insert id="addSupplyGoods" parameterType="supplyGoodsInfoEntity">
+		insert into
+		supply_goods_info(goods_info_id, price, stock, user_store_id, sale_count, `status`, updated_time, created_time)
+		values(#{goodsInfoId}, #{price},#{stock},#{userStoreId}, #{saleCount}, #{status}, now(), now())
+	</insert>
+	
+	<select id="isHasGoodsInSupplyGoodsInfo" parameterType="supplyGoodsInfoEntity" resultType="supplyGoodsInfoEntity">
+		select id from supply_goods_info where goods_info_id=#{goodsInfoId} and user_store_id=#{userStoreId}
+	</select>
+	
+	<insert id="addGoodsInfo" parameterType="goodsInfoEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		goods_info(category_id, goods_name, spec, pic, `status`, update_date, create_date)
+		values(#{categoryId}, #{goodsName},#{spec},#{pic}, #{status}, now(), now())
+	</insert>
+
+</mapper>

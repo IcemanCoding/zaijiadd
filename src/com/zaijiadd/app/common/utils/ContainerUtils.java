@@ -1,5 +1,7 @@
 package com.zaijiadd.app.common.utils;
 
+import com.zaijiadd.app.utils.constants.ConstantsForResponse;
+
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -10,8 +12,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import com.zaijiadd.app.utils.constants.ConstantsForResponse;
 
 public class ContainerUtils {
 	
@@ -96,6 +96,24 @@ public class ContainerUtils {
 		
 	}
 	
+	public static Map<String, Object> buildResultMap(Map<String, Object> data) {
+		data.put( "flag", ConstantsForResponse.RESPONSE_CODE_SUCESS );
+		data.put( "msg", ConstantsForResponse.RESPONSE_MESSAGE_SUCESS );
+		return data;
+	}
+	
+	public static Map<String, Object> buildResultErrMap(Map<String, Object> data) {
+		data.put( "flag", ConstantsForResponse.RESPONSE_CODE_ERR );
+		data.put( "msg", ConstantsForResponse.RESPONSE_MESSAGE_ERR );
+		return data;
+	}
+	
+	public static Map<String, Object> buildResultNoKnowErrMap(Map<String, Object> data) {
+		data.put( "flag", ConstantsForResponse.RESPONSE_CODE_ERR );
+		data.put( "msg", ConstantsForResponse.RESPONSE_MESSAGE_NO_KNOW_ERR );
+		return data;
+	}
+	
 	public static Map<String, Object> buildResMap( Map data, Integer flag, String msg, String responseCode ) {
 		
 		Map<String, Object> res = new HashMap<String, Object>();
@@ -107,7 +125,7 @@ public class ContainerUtils {
 		return res;
 		
 	}
-	
+
 	public static Map<String, Object> entityToMap( Object bean ) {
 		
 		Class<? extends Object> clazz = bean.getClass();

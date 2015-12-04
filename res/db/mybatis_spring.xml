@@ -69,5 +69,20 @@
 		<property name="mapperInterface" value="com.zaijiadd.app.user.dao.UserProductDAO" />
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
 	</bean>
+	
+	<bean id="supplyGoodsInfoDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.zaijiadd.app.store.dao.SupplyGoodsInfoDao" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+	
+	<bean id="categoryInfoDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.zaijiadd.app.store.dao.CategoryInfoDao" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+	
+	<bean id="orderDetailDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.zaijiadd.app.order.dao.OrderDetailDAO" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
 
 </beans>

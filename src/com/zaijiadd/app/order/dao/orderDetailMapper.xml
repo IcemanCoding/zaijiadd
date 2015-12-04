@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zaijiadd.app.order.dao.OrderDetailDAO">
+
+	<select id="queryLogisticsTypes" resultType="logisticsTypeEntity">
+		select id, name, short_name shortName from logistics_type
+	</select>
+
+	<select id="lookOrderDetailById" parameterType="int" resultType="orderDetailDTO">
+		select 
+			o.id,
+			o.order_id as orderCode,
+			o.user_id as userId,
+			o.trans_code as transCode,
+			o.product_id as productId,
+			o.amount,
+			o.trans_status as transStatus,
+			o.create_date as createDate,
+			o.update_date as updateDate,
+			o.discount_amount as discountAmount,
+			o.trans_expenses as transExpenses,
+			o.logistics_type_id as logisticsTypeId,
+			o.logistics_code as logisticsCode,
+			o.pay_status as payStatus,
+			o.presending_time as presendingTime,
+			o.supply_store_id as supplyStoreId,
+			o.pay_time as payTime,
+			l.`name` as logisticsName,
+			l.short_name as logisticsShortName,
+			uri.address receiveAddress,
+			uri.mobile receiveMobile,
+			uri.real_name receiveRealName,
+			uri.post_code receivePostCode,
+			ui.account			
+		 from 
+		 	order_info o left join logistics_type l on  o.logistics_type_id = l.id
+			LEFT JOIN user_info ui on o.user_id = ui.user_id
+			LEFT JOIN user_receive_info uri on o.user_id = uri.user_id and uri.sort = 0
+		where o.id = #{id}
+	</select>
+	
+	<select id="lookOrderDetailByOrderCode" parameterType="string" resultType="orderDetailDTO">
+		select 
+			o.id,
+			o.order_id as orderCode,
+			o.user_id as userId,
+			o.trans_code as transCode,
+			o.product_id as productId,
+			o.amount,
+			o.trans_status as transStatus,
+			o.create_date as createDate,
+			o.update_date as updateDate,
+			o.discount_amount as discountAmount,
+			o.trans_expenses as transExpenses,
+			o.logistics_type_id as logisticsTypeId,
+			o.logistics_code as logisticsCode,
+			o.pay_status as payStatus,
+			o.presending_time as presendingTime,
+			o.supply_store_id as supplyStoreId,
+			o.pay_time as payTime,
+			l.`name` as logisticsName,
+			l.short_name as logisticsShortName,
+			uri.address receiveAddress,
+			uri.mobile receiveMobile,
+			uri.real_name receiveRealName,
+			uri.post_code receivePostCode
+		 from 
+		 	order_info o left join logistics_type l
+		 	on  o.logistics_type_id = l.id
+			LEFT JOIN user_receive_info uri on o.user_id = uri.user_id and uri.sort = 0
+     	 where  o.order_id =  #{orderCode}
+	</select>
+
+	<select id="queryAllOrderByUserId" parameterType="map" resultType="orderDetailDTO">
+		select 
+			o.id,
+			o.order_id as orderCode,
+			o.user_id as userId,
+			o.trans_code as transCode,
+			o.product_id as productId,
+			o.amount,
+			o.trans_status as transStatus,
+			o.create_date as createDate,
+			o.update_date as updateDate,
+			o.discount_amount as discountAmount,
+			o.trans_expenses as transExpenses,
+			o.logistics_type_id as logisticsTypeId,
+			o.logistics_code as logisticsCode,
+			o.pay_status as payStatus,
+			o.presending_time as presendingTime,
+			o.supply_store_id as supplyStoreId,
+			o.pay_time as payTime,
+			l.`name` as logisticsName,
+			l.short_name as logisticsShortName
+		 from 
+		 	order_info o left join logistics_type l
+			on  o.logistics_type_id = l.id
+     	 where  o.user_id = #{userId}
+     	 order by o.update_date desc,o.create_date desc 
+     	 limit #{start},#{pageSize}
+	</select>
+
+	<!-- 查找某商店下的所有订单信息 -->
+	<select id="queryAllOrderInStore" parameterType="map" resultType="orderDetailDTO">
+		select 
+			o.id,
+			o.order_id as orderCode,
+			o.user_id as userId,
+			o.trans_code as transCode,
+			o.product_id as productId,
+			o.amount,
+			o.trans_status as transStatus,
+			o.create_date as createDate,
+			o.update_date as updateDate,
+			o.discount_amount as discountAmount,
+			o.trans_expenses as transExpenses,
+			o.logistics_type_id as logisticsTypeId,
+			o.logistics_code as logisticsCode,
+			o.pay_status as payStatus,
+			o.presending_time as presendingTime,
+			o.supply_store_id as supplyStoreId,
+			o.pay_time as payTime,
+			l.`name` as logisticsName,
+			l.short_name as logisticsShortName
+		 from 
+		 	order_info o left join logistics_type l
+			on  o.logistics_type_id = l.id
+     	 where  o.supply_store_id = #{supplyStoreId}
+     	 order by o.update_date desc,o.create_date desc 
+     	 limit #{start},#{pageSize}
+	</select>
+	
+	<!-- 查看某订单下的所有产品信息 -->
+	<select id="lookGoodsInfoByOrderKeyId" parameterType="int" resultType="goodsInfoInOrderDTO">
+		select 
+			o.id,
+			g.goods_id as goodsID,
+			g.category_id as categoryId,
+			g.goods_name as goodsName,
+			g.description,
+			g.spec,
+			g.pic,
+			g.tag,
+			s.goods_info_id as goodsInfoId,
+			s.price,
+			s.stock,
+			s.sale_count as saleCount,
+			t.store_name as storeName,
+			t.store_addr as storeAddr
+			 from
+			order_goods_info o,
+			supply_goods_info s,
+			goods_info g,
+			store_info t
+		where 
+			o.supply_goods_info_id=s.id
+			and s.goods_info_id=g.id 
+			and s.user_store_id = t.store_id
+			and o.order_key_id=#{orderKeyId}
+	</select>
+	
+	
+	<!-- 查找某商店下的所有订单信息  根据收获地址排序-->
+	<select id="queryAllOrderByPayStatus" parameterType="map" resultType="orderDetailDTO">
+		select 
+			o.id,
+			o.order_id as orderCode,
+			o.user_id as userId,
+			o.trans_code as transCode,
+			o.product_id as productId,
+			o.amount,
+			o.trans_status as transStatus,
+			o.create_date as createDate,
+			o.update_date as updateDate,
+			o.discount_amount as discountAmount,
+			o.trans_expenses as transExpenses,
+			o.logistics_type_id as logisticsTypeId,
+			o.logistics_code as logisticsCode,
+			o.pay_status as payStatus,
+			o.presending_time as presendingTime,
+			o.supply_store_id as supplyStoreId,
+			o.pay_time as payTime,
+			l.`name` as logisticsName,
+			l.short_name as logisticsShortName,
+			
+			u.mobile_number mobileNumber,
+			u.account,
+			i.store_name storeName,
+			i.store_addr storeAddr
+		 from 
+		 	order_info o left join logistics_type l on  o.logistics_type_id = l.id
+			left join user_info u on o.user_id = u.user_id
+			left join user_receive_info uri on uri.user_id = o.user_id and uri.sort in (SELECT MIN(uri2.sort) from user_receive_info uri2 where uri2.user_id=o.user_id)
+			left join user_store s on u.user_id = s.id
+			left join store_info i on s.store_id = i.store_id
+		<where>
+			<if test="payStatus != null and payStatus != ''">
+				and o.pay_status=#{payStatus}
+			</if>
+		</where>
+     	 order by uri.province_id,uri.city_id,uri.town_id,o.update_date desc,o.create_date desc 
+     	 limit #{start},#{pageSize}
+	</select>
+
+	<select id="joinGoodsInfoByOrderKeyId" parameterType="map" resultType="goodsInfoInOrderDTO">
+		select 
+			ogi.count,
+			sgo.price, 
+			sgo.stock, 
+			gi.id,
+			gi.goods_id goodsId,
+			sgo.sale_count saleCount,
+			gi.goods_name goodsName,
+			gi.description,
+			gi.spec,
+			gi.pic,
+			gi.tag,
+			ci.category_code categoryCode,
+			ci.category_name categoryName
+		 from 
+			order_goods_info ogi 
+			left join supply_goods_info sgo on sgo.id = ogi.supply_goods_info_id
+			left join goods_info gi on gi.id = sgo.goods_info_id
+			left join category_info ci on ci.category_id = gi.category_id
+
+		where ogi.order_key_id = #{orderKeyId}
+		<if test="pageSize != null">
+			limit #{start},#{pageSize}
+		</if>
+	</select>
+
+</mapper>
